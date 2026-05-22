@@ -31,4 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
-.env.ps1
+
+src/main/resources/application.properties
