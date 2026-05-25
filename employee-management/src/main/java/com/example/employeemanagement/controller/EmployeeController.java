@@ -4,6 +4,7 @@ import com.example.employeemanagement.service.UtilityService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -23,12 +24,12 @@ public class EmployeeController {
     }
 
     @GetMapping("/employee/name")
-    public String employeeName() {
-        return utilityService.formatEmployeeName("  vu thi ngoc ");
+    public String employeeName(@RequestParam String name) {
+        return utilityService.formatEmployeeName(name);
     }
 
     @GetMapping("/employee/password")
-    public String employeePassword() {
-        return passwordEncoder.encode("123456");
+    public String employeePassword(@RequestParam String password) {
+        return passwordEncoder.encode(password);
     }
 }
