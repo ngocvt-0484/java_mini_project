@@ -1,6 +1,8 @@
 package com.example.employeemanagement.controller;
 
 import com.example.employeemanagement.dto.request.CreateEmployeeRequest;
+import com.example.employeemanagement.dto.request.SearchEmployeeRequest;
+import com.example.employeemanagement.dto.request.UpdateEmployeeRequest;
 import com.example.employeemanagement.dto.response.EmployeeResponse;
 import com.example.employeemanagement.dto.response.SuccessResponse;
 import com.example.employeemanagement.service.EmployeeService;
@@ -45,8 +47,8 @@ public class EmployeeController {
 
     // GET employees
     @GetMapping("/employees")
-    public ResponseEntity<SuccessResponse<List<EmployeeResponse>>> getEmployees() {
-        List<EmployeeResponse> employees = employeeService.getAllEmployees();
+    public ResponseEntity<SuccessResponse<List<EmployeeResponse>>> getEmployees(SearchEmployeeRequest request) {
+        List<EmployeeResponse> employees = employeeService.getAllEmployees(request);
         SuccessResponse<List<EmployeeResponse>> successResource = new SuccessResponse<>("Employees found successfully", employees);
         return ResponseEntity.ok(successResource);
     }
@@ -59,4 +61,27 @@ public class EmployeeController {
         return ResponseEntity.ok(response);
     }
 
+    // GET employee by id
+    @GetMapping("/employees/{id}")
+    public ResponseEntity<?> getEmployeeById(@PathVariable Long id) {
+        EmployeeResponse e = employeeService.getEmployeeById(id);
+        SuccessResponse<EmployeeResponse> response = new SuccessResponse<>("Employee found successfully", e);
+        return ResponseEntity.ok(response);
+    }
+
+    // UPDATE employee by id
+    @PutMapping("/employees/{id}")
+    public ResponseEntity<?> updateEmployee(@PathVariable Long id, @Valid @RequestBody UpdateEmployeeRequest request) {
+        EmployeeResponse e = employeeService.updateEmployee(id, request);
+        SuccessResponse<EmployeeResponse> response = new SuccessResponse<>("Employee updated successfully", e);
+        return ResponseEntity.ok(response);
+    }
+
+    // DELETE employee by id
+    @DeleteMapping("/employees/{id}")
+    public ResponseEntity<?> deleteEmployee(@PathVariable Long id) {
+        employeeService.deleteEmployee(id);
+        SuccessResponse<String> response = new SuccessResponse<>("Employee deleted successfully", null);
+        return ResponseEntity.ok(response);
+    }
 }
