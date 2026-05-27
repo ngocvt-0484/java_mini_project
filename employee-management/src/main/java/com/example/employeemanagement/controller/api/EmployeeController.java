@@ -1,4 +1,4 @@
-package com.example.employeemanagement.controller;
+package com.example.employeemanagement.controller.api;
 
 import com.example.employeemanagement.dto.request.CreateEmployeeRequest;
 import com.example.employeemanagement.dto.request.SearchEmployeeRequest;

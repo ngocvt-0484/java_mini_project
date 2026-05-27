@@ -1,6 +1,8 @@
-package com.example.employeemanagement.exception;
+package com.example.employeemanagement.exception.api;
 
 import com.example.employeemanagement.dto.response.ErrorResponse;
+import com.example.employeemanagement.exception.DuplicateResourceException;
+import com.example.employeemanagement.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -9,8 +11,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.List;
 
-@RestControllerAdvice
-public class GlobalExceptionHandler {
+@RestControllerAdvice(
+        basePackages =
+                "com.example.employeemanagement.controller.api"
+)
+public class ApiExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidationException(
