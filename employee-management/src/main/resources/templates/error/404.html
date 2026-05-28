@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>404 Not Found</title>
+    </head>
+
+    <body>
+        <h1>404 - Resource Not Found</h1>
+        <p th:text="${message}"></p>
+        <a th:href="@{/employees/list}">
+            Back to Employee List
+        </a>
+    </body>
+</html>
