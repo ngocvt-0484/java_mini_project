@@ -3,6 +3,7 @@ package com.example.employeemanagement.controller.api;
 import com.example.employeemanagement.dto.request.CreateEmployeeRequest;
 import com.example.employeemanagement.dto.request.SearchEmployeeRequest;
 import com.example.employeemanagement.dto.request.UpdateEmployeeRequest;
+import com.example.employeemanagement.dto.response.EmployeeReportResponse;
 import com.example.employeemanagement.dto.response.EmployeeResponse;
 import com.example.employeemanagement.dto.response.SuccessResponse;
 import com.example.employeemanagement.service.EmployeeService;
@@ -82,6 +83,13 @@ public class EmployeeController {
     public ResponseEntity<?> deleteEmployee(@PathVariable Long id) {
         employeeService.deleteEmployee(id);
         SuccessResponse<String> response = new SuccessResponse<>("Employee deleted successfully", null);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/employees/report")
+    public ResponseEntity<?> getEmployeeReport() {
+        EmployeeReportResponse report = employeeService.getEmployeeReport();
+        SuccessResponse<EmployeeReportResponse> response = new SuccessResponse<>("Employee report generated successfully", report);
         return ResponseEntity.ok(response);
     }
 }
