@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>500 Error</title>
+    </head>
+    <body>
+        <h1>500 - Internal Server Error</h1>
+        <p th:text="${message}"></p>
+        <p th:text="${path}"></p>
+        <a th:href="@{/employees/list}">
+            Back to Employee List
+        </a>
+    </body>
+</html>

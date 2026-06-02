@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Edit Employee</title>
+        <link rel="stylesheet" th:href="@{/css/style.css}">
+    </head>
+
+    <body>
+        <div class="container">
+            <h1>Edit Employee</h1>
+            <form th:action="@{/employees/{id}(id=${employeeId})}"
+                  method="post"
+                  th:object="${employee}">
+                <input type="hidden"
+                       name="_method"
+                       value="put">
+                <!-- name -->
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text"
+                           th:field="*{name}">
+                    <p class="error"
+                       th:if="${#fields.hasErrors('name')}"
+                       th:errors="*{name}">
+                    </p>
+                </div>
+
+                <!-- email -->
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email"
+                           th:field="*{email}">
+
+                    <p class="error"
+                       th:if="${#fields.hasErrors('email')}"
+                       th:errors="*{email}">
+                    </p>
+
+                </div>
+
+                <!-- password -->
+
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="text"
+                           th:field="*{password}">
+
+                    <p class="error"
+                       th:if="${#fields.hasErrors('password')}"
+                       th:errors="*{password}">
+                    </p>
+                </div>
+
+                <!-- role -->
+                <div class="form-group">
+                    <label>Role</label>
+
+                    <select th:field="*{role}">
+                        <option value="">
+                            Select Role
+                        </option>
+                        <option
+                                th:each="role : ${roles}"
+                                th:value="${role}"
+                                th:text="${role}">
+                        </option>
+                    </select>
+                    <p class="error"
+                       th:if="${#fields.hasErrors('role')}"
+                       th:errors="*{role}">
+                    </p>
+                </div>
+
+                <!-- department -->
+
+                <div class="form-group">
+                    <label>Department</label>
+                    <select th:field="*{departmentId}">
+                        <option value="">
+                            Select Department
+                        </option>
+                        <option
+                                th:each="department : ${departments}"
+                                th:value="${department.id}"
+                                th:text="${department.name}">
+                        </option>
+                    </select>
+
+                    <p class="error"
+                       th:if="${#fields.hasErrors('departmentId')}"
+                       th:errors="*{departmentId}">
+                    </p>
+                </div>
+
+                <button type="submit">
+                    Save Employee
+                </button>
+                <a th:href="@{/employees}"
+                   class="back-btn">
+                    Back To List
+                </a>
+            </form>
+        </div>
+    </body>
+</html>
