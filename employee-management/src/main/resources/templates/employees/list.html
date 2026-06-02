@@ -27,11 +27,17 @@
             <div class="header">
 
                 <h1>Employee Management</h1>
-                <a href="/employees/add"
-                    class="btn"
-                    sec:authorize="hasRole('ADMIN')">
-                    Add Employee
-                </a>
+                <div class="header-actions">
+                    <a href="/employees/add"
+                       class="btn"
+                       sec:authorize="hasRole('ADMIN')">
+                        Add Employee
+                    </a>
+
+                    <a href="/employees/statistics" class="btn-secondary">
+                        Statistics
+                    </a>
+                </div>
             </div>
             <div class="alert success"
                  th:if="${successMessage}"

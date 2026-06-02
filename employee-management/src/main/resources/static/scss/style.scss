@@ -2,6 +2,7 @@ $primary: #273c75;
 $danger: #e84118;
 $success: #44bd32;
 $bg: #f5f6fa;
+$blue: #6a80cd;
 
 body {
   font-family: Arial, sans-serif;
@@ -21,6 +22,12 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 24px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
 }
 
 .btn {
@@ -29,6 +36,16 @@ body {
   padding: 10px 16px;
   text-decoration: none;
   border-radius: 5px;
+  display: inline-block;
+}
+
+.btn-secondary {
+  background: $blue;
+  color: white;
+  padding: 10px 16px;
+  text-decoration: none;
+  border-radius: 5px;
+  display: inline-block;
 }
 
 .search-form {

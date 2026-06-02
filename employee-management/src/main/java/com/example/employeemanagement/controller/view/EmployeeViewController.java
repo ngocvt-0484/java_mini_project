@@ -213,4 +213,11 @@ public class EmployeeViewController {
         );
         return "redirect:/employees";
     }
+
+    @GetMapping("/statistics")
+    public String statistics(Model model) {
+        model.addAttribute("departmentStatistics", employeeService.getEmployeeCountByDepartment());
+        model.addAttribute("totalEmployees", employeeService.getTotalEmployee());
+        return "employees/statistics";
+    }
 }

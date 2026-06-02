@@ -5,6 +5,7 @@ import com.example.employeemanagement.dto.request.RegisterRequest;
 import com.example.employeemanagement.dto.request.SearchEmployeeRequest;
 import com.example.employeemanagement.dto.request.UpdateEmployeeRequest;
 import com.example.employeemanagement.dto.response.DepartmentResponse;
+import com.example.employeemanagement.dto.response.DepartmentStatisticsReponse;
 import com.example.employeemanagement.dto.response.EmployeeReportResponse;
 import com.example.employeemanagement.dto.response.EmployeeResponse;
 import com.example.employeemanagement.entity.Department;
@@ -181,6 +182,24 @@ public class EmployeeService {
         log.info("Generating employee report...");
         Long total = employeeRepository.count();
         return EmployeeReportResponse.builder().totalEmployees(total).build();
+    }
+
+    public List<DepartmentStatisticsReponse> getEmployeeCountByDepartment() {
+        log.info("Generating employee count by department report...");
+        return employeeRepository
+                .getEmployeeStatisticsByDepartment()
+                .stream()
+                .map(stat ->
+                        new DepartmentStatisticsReponse(
+                                stat.getDepartmentName(),
+                                stat.getEmployeeCount()
+                        )
+                )
+                .toList();
+    }
+
+    public Long getTotalEmployee() {
+        return employeeRepository.count();
     }
 
     private EmployeeResponse mapToEmployeeResponse(
