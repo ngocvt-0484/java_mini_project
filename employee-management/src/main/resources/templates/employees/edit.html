@@ -40,6 +40,39 @@
 
                 </div>
 
+                <!-- password -->
+
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="text"
+                           th:field="*{password}">
+
+                    <p class="error"
+                       th:if="${#fields.hasErrors('password')}"
+                       th:errors="*{password}">
+                    </p>
+                </div>
+
+                <!-- role -->
+                <div class="form-group">
+                    <label>Role</label>
+
+                    <select th:field="*{role}">
+                        <option value="">
+                            Select Role
+                        </option>
+                        <option
+                                th:each="role : ${roles}"
+                                th:value="${role}"
+                                th:text="${role}">
+                        </option>
+                    </select>
+                    <p class="error"
+                       th:if="${#fields.hasErrors('role')}"
+                       th:errors="*{role}">
+                    </p>
+                </div>
+
                 <!-- department -->
 
                 <div class="form-group">

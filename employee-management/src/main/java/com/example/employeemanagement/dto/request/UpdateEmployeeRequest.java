@@ -1,5 +1,6 @@
 package com.example.employeemanagement.dto.request;
 
+import com.example.employeemanagement.enums.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -15,4 +16,9 @@ public class UpdateEmployeeRequest {
     private String email;
 
     private Long departmentId;
+
+    @Size(min = 6, max = 20, message = "Password must be between 6 and 20 characters")
+    private String password;
+
+    private UserRole role;
 }

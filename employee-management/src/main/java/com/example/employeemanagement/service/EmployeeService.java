@@ -1,6 +1,7 @@
 package com.example.employeemanagement.service;
 
 import com.example.employeemanagement.dto.request.CreateEmployeeRequest;
+import com.example.employeemanagement.dto.request.RegisterRequest;
 import com.example.employeemanagement.dto.request.SearchEmployeeRequest;
 import com.example.employeemanagement.dto.request.UpdateEmployeeRequest;
 import com.example.employeemanagement.dto.response.DepartmentResponse;
@@ -8,6 +9,7 @@ import com.example.employeemanagement.dto.response.EmployeeReportResponse;
 import com.example.employeemanagement.dto.response.EmployeeResponse;
 import com.example.employeemanagement.entity.Department;
 import com.example.employeemanagement.entity.Employee;
+import com.example.employeemanagement.enums.UserRole;
 import com.example.employeemanagement.exception.DuplicateResourceException;
 import com.example.employeemanagement.exception.ResourceNotFoundException;
 import com.example.employeemanagement.repository.DepartmentRepository;
@@ -16,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -25,6 +28,7 @@ import java.util.List;
 public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final DepartmentRepository departmentRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public List<EmployeeResponse> getAllEmployees(SearchEmployeeRequest request) {
         String name = request.getName();
@@ -87,11 +91,27 @@ public class EmployeeService {
         Employee employee = Employee.builder()
                 .name(employeeRequest.getName())
                 .email(employeeRequest.getEmail())
+                .password(passwordEncoder.encode(employeeRequest.getPassword()))
+                .role(employeeRequest.getRole() != null ? employeeRequest.getRole() : UserRole.USER)
                 .department(department)
                 .build();
         Employee savedEmployee = employeeRepository.save(employee);
         log.info("Employee created successfully with id: {}", savedEmployee.getId());
         return mapToEmployeeResponse(savedEmployee);
+    }
+
+    public void register(RegisterRequest request) {
+        if (employeeRepository.existsByEmail(request.getEmail())) {
+            log.error("Email already exists: {}", request.getEmail());
+            throw new DuplicateResourceException("Email already exists: " + request.getEmail());
+        }
+        Employee employee = Employee.builder()
+                .name(request.getName())
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .role(UserRole.USER)
+                .build();
+        employeeRepository.save(employee);
     }
 
     public EmployeeResponse getEmployeeById(Long id) {
@@ -133,6 +153,15 @@ public class EmployeeService {
                     });
             employee.setDepartment(department);
         }
+
+        if (employeeRequest.getRole() != null) {
+            employee.setRole(employeeRequest.getRole());
+        }
+
+        if (employeeRequest.getPassword() != null) {
+            employee.setPassword(passwordEncoder.encode(employeeRequest.getPassword()));
+        }
+
         Employee updatedEmployee = employeeRepository.save(employee);
         log.info("Employee updated successfully with id: {}", updatedEmployee.getId());
         return mapToEmployeeResponse(updatedEmployee);
@@ -171,6 +200,7 @@ public class EmployeeService {
                 .name(employee.getName())
                 .email(employee.getEmail())
                 .department(departmentResponse)
+                .role(employee.getRole())
                 .build();
     }
 }

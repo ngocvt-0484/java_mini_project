@@ -138,3 +138,14 @@ button:hover {
   border-radius: 4px;
   cursor: pointer;
 }
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.logout-btn {
+  cursor: pointer;
+}

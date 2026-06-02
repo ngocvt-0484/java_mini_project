@@ -5,6 +5,7 @@ import com.example.employeemanagement.dto.request.SearchEmployeeRequest;
 import com.example.employeemanagement.dto.request.UpdateEmployeeRequest;
 import com.example.employeemanagement.dto.response.DepartmentResponse;
 import com.example.employeemanagement.dto.response.EmployeeResponse;
+import com.example.employeemanagement.enums.UserRole;
 import com.example.employeemanagement.exception.DuplicateResourceException;
 import com.example.employeemanagement.service.DepartmentService;
 import com.example.employeemanagement.service.EmployeeService;
@@ -15,7 +16,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.util.List;
 
 @Controller
@@ -48,6 +48,7 @@ public class EmployeeViewController {
         List<DepartmentResponse> departments = departmentService.getAllDepartments();
         model.addAttribute("departments", departments);
         model.addAttribute("employee", new CreateEmployeeRequest());
+        model.addAttribute("roles", UserRole.values());
 
         return "employees/add";
     }
@@ -71,6 +72,10 @@ public class EmployeeViewController {
             model.addAttribute(
                     "departments",
                     departmentService.getAllDepartments()
+            );
+            model.addAttribute(
+                    "roles",
+                    UserRole.values()
             );
             return "employees/add";
         }
@@ -115,7 +120,8 @@ public class EmployeeViewController {
 
         request.setName(employee.getName());
         request.setEmail(employee.getEmail());
-
+        request.setRole(employee.getRole());
+        request.setPassword(null); // Don't pre-fill the password field
         if (employee.getDepartment() != null) {
 
             request.setDepartmentId(
@@ -136,6 +142,11 @@ public class EmployeeViewController {
         model.addAttribute(
                 "departments",
                 departmentService.getAllDepartments()
+        );
+
+        model.addAttribute(
+                "roles",
+                UserRole.values()
         );
         return "employees/edit";
     }

@@ -11,6 +11,7 @@ logging:
     com.example.employeemanagement: DEBUG
     org.hibernate.SQL: DEBUG
     org.hibernate.orm.jdbc.bind: TRACE
+    org.springframework.security: DEBUG
 
 management:
   endpoints:
@@ -21,3 +22,6 @@ management:
   endpoint:
     health:
       show-details: always
+jwt:
+  secret-key: ${JWT_SECRET_KEY}
+  expiration: 3600000

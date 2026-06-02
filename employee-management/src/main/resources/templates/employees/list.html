@@ -1,16 +1,35 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
     <head>
         <title>Employees</title>
         <link rel="stylesheet" th:href="@{/css/style.css}">
     </head>
     <body>
+        <div class="top-bar">
+            <div>
+                Welcome,
+                <strong sec:authentication="name"></strong>
+            </div>
+
+            <form th:action="@{/logout}"
+                  method="post">
+
+                <button type="submit"
+                        class="logout-btn">
+                    Logout
+                </button>
+
+            </form>
+        </div>
+
         <div class="container">
             <div class="header">
 
                 <h1>Employee Management</h1>
                 <a href="/employees/add"
-                   class="btn">
+                    class="btn"
+                    sec:authorize="hasRole('ADMIN')">
                     Add Employee
                 </a>
             </div>
@@ -47,7 +66,8 @@
                     <th>Name</th>
                     <th>Email</th>
                     <th>Department</th>
-                    <th>Actions</th>
+                    <th>Role</th>
+                    <th sec:authorize="hasRole('ADMIN')">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -59,7 +79,8 @@
                             ? employee.department.name
                             : ''}">
                         </td>
-                        <td>
+                        <td th:text="${employee.role}"></td>
+                        <td sec:authorize="hasRole('ADMIN')">
                             <a
                                     th:href="@{/employees/{id}/edit(id=${employee.id})}"
                                     class="edit-btn">
