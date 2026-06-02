@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Statistics</title>
+        <link rel="stylesheet" th:href="@{/css/style.css}">
+    </head>
+    <body>
+
+        <h1>Employee Statistics</h1>
+
+        <table>
+
+            <thead>
+            <tr>
+                <th>Department</th>
+                <th>Employees</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="stat : ${departmentStatistics}">
+                <td th:text="${stat.departmentName}"></td>
+                <td th:text="${stat.employeeCount}"></td>
+            </tr>
+            </tbody>
+
+        </table>
+
+        <h2>
+            Total Employees:
+            <span th:text="${totalEmployees}"></span>
+        </h2>
+
+        <a href="/employees">
+            Back
+        </a>
+    </body>
+</html>

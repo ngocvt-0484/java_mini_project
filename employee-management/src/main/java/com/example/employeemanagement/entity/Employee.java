@@ -3,6 +3,7 @@ package com.example.employeemanagement.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
+import com.example.employeemanagement.enums.UserRole;
 
 @Entity
 @Table(name = "employee")
@@ -22,6 +23,13 @@ public class Employee {
 
     @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
+    @Column(nullable = false)
+    private String password;
 
     @Column(name="created_at", updatable = false)
     private LocalDateTime createdAt;

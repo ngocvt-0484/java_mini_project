@@ -2,10 +2,12 @@ package com.example.employeemanagement.db;
 
 import com.example.employeemanagement.entity.Department;
 import com.example.employeemanagement.entity.Employee;
+import com.example.employeemanagement.enums.UserRole;
 import com.example.employeemanagement.repository.DepartmentRepository;
 import com.example.employeemanagement.repository.EmployeeRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import lombok.extern.slf4j.Slf4j;
 import lombok.*;
@@ -17,6 +19,7 @@ import java.util.List;
 public class Seed implements CommandLineRunner {
     private final DepartmentRepository departmentRepository;
     private final EmployeeRepository employeeRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
@@ -76,47 +79,63 @@ public class Seed implements CommandLineRunner {
                 .findByName("Sales")
                 .orElseThrow();
 
+        String password = passwordEncoder.encode("123456");
+
         List<Employee> employees = List.of(
 
                 Employee.builder()
                         .name("John Doe")
                         .email("john.doe@example.com")
                         .department(itDept)
+                        .password(password)
+                        .role(UserRole.ADMIN)
                         .build(),
 
                 Employee.builder()
                         .name("Jane Smith")
                         .email("jane.smith@example.com")
                         .department(hrDept)
+                        .password(password)
+                        .role(UserRole.ADMIN)
                         .build(),
 
                 Employee.builder()
                         .name("Bob Johnson")
                         .email("bob.johnson@example.com")
+                        .password(password)
+                        .role(UserRole.ADMIN)
                         .department(financeDept)
                         .build(),
 
                 Employee.builder()
                         .name("Alice Williams")
                         .email("alice.williams@example.com")
+                        .password(password)
+                        .role(UserRole.ADMIN)
                         .department(salesDept)
                         .build(),
 
                 Employee.builder()
                         .name("Charlie Brown")
                         .email("charlie.brown@example.com")
+                        .password(password)
+                        .role(UserRole.ADMIN)
                         .department(itDept)
                         .build(),
 
                 Employee.builder()
                         .name("Diana Prince")
                         .email("diana.prince@example.com")
+                        .password(password)
+                        .role(UserRole.USER)
                         .department(salesDept)
                         .build(),
 
                 Employee.builder()
                         .name("Eve Davis")
                         .email("eve.davis@example.com")
+                        .password(password)
+                        .role(UserRole.USER)
                         .department(hrDept)
                         .build()
         );

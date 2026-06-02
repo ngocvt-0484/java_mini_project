@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+    <head>
+        <title>Employees</title>
+        <link rel="stylesheet" th:href="@{/css/style.css}">
+    </head>
+    <body>
+        <div class="top-bar">
+            <div>
+                Welcome,
+                <strong sec:authentication="name"></strong>
+            </div>
+
+            <form th:action="@{/logout}"
+                  method="post">
+
+                <button type="submit"
+                        class="logout-btn">
+                    Logout
+                </button>
+
+            </form>
+        </div>
+
+        <div class="container">
+            <div class="header">
+
+                <h1>Employee Management</h1>
+                <div class="header-actions">
+                    <a href="/employees/add"
+                       class="btn"
+                       sec:authorize="hasRole('ADMIN')">
+                        Add Employee
+                    </a>
+
+                    <a href="/employees/statistics" class="btn-secondary">
+                        Statistics
+                    </a>
+                </div>
+            </div>
+            <div class="alert success"
+                 th:if="${successMessage}"
+                 th:text="${successMessage}">
+            </div>
+
+            <form method="get"
+                  action="/employees"
+                  class="search-form">
+
+                <input type="text"
+                       name="name"
+                       placeholder="Search by name"
+                       th:value="${searchRequest.name}">
+
+                <input type="text"
+                       name="department"
+                       placeholder="Search by department"
+                       th:value="${searchRequest.department}">
+
+                <button type="submit">
+                    Search
+                </button>
+
+            </form>
+
+            <table>
+
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Department</th>
+                    <th>Role</th>
+                    <th sec:authorize="hasRole('ADMIN')">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="employee : ${employees}">
+                        <td th:text="${employee.id}"></td>
+                        <td th:text="${employee.name}"></td>
+                        <td th:text="${employee.email}"></td>
+                        <td th:text="${employee.department != null
+                            ? employee.department.name
+                            : ''}">
+                        </td>
+                        <td th:text="${employee.role}"></td>
+                        <td sec:authorize="hasRole('ADMIN')">
+                            <a
+                                    th:href="@{/employees/{id}/edit(id=${employee.id})}"
+                                    class="edit-btn">
+                                Edit
+                            </a>
+                            <form
+                                    th:action="@{/employees/{id}(id=${employee.id})}"
+                                    method="post"
+                                    style="display:inline">
+                                <input type="hidden"
+                                       name="_method"
+                                       value="delete">
+                                <button
+                                        type="submit"
+                                        class="delete-btn"
+                                        onclick="return confirm('Delete this employee?')">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
